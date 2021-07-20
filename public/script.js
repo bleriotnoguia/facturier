@@ -1,2 +1,2 @@
-"use strict";
-console.log('Test');
+import { FormInput } from './classes/FormInputs.js';
+new FormInput();
