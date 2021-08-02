@@ -22,6 +22,9 @@ export class FormInput {
   hiddenDiv: HTMLDivElement;
   btnPrint: HTMLButtonElement;
   btnReload: HTMLButtonElement;
+  btnStoredInvoices: HTMLButtonElement;
+  btnStoredEstimates: HTMLButtonElement;
+  storedEl: HTMLDivElement;
 
   constructor(){
     this.form = document.getElementById('form') as HTMLFormElement;
@@ -40,11 +43,15 @@ export class FormInput {
     this.hiddenDiv = document.getElementById('hiddenDiv') as HTMLDivElement;
     this.btnPrint = document.getElementById('print') as HTMLButtonElement;
     this.btnReload = document.getElementById('reload') as HTMLButtonElement;
+    this.btnStoredInvoices = document.getElementById('stored-invoices') as HTMLButtonElement;
+    this.btnStoredEstimates = document.getElementById('stored-estimates') as HTMLButtonElement;
+    this.storedEl = document.getElementById('stored-data') as HTMLDivElement;
 
     // Listener
     this.submitFormListener();
     this.printListener(this.btnPrint, this.docContainer)
     this.deleteListener(this.btnReload)
+    this.getStoredDocsListener();
   }
 
   // Listeners
@@ -65,6 +72,41 @@ export class FormInput {
       document.location.reload();
       window.scroll(0,0);
     })
+  }
+
+  private getStoredDocsListener(): void{
+    this.btnStoredInvoices.addEventListener("click", () => this.getItems('invoice'))
+    this.btnStoredEstimates.addEventListener("click", this.getItems.bind(this, 'estimate'))
+  }
+
+  private getItems(docType: string){
+    if(this.storedEl.hasChildNodes()){
+      this.storedEl.innerHTML = "";
+    }
+    if(localStorage.getItem(docType)){
+      let array: string | null;
+      array = localStorage.getItem(docType)
+
+      if(array !== null && array.length > 2){
+        let arrayData: string[];
+        arrayData = JSON.parse(array)
+
+        arrayData.map((doc: string): void => {
+          let card: HTMLDivElement = document.createElement('div');
+          let cardBody: HTMLDivElement = document.createElement('div');
+          let cardClasses: Array<string> = ['card', 'mt-5'];
+          let cardBodyClasses: string = 'card-body';
+          card.classList.add(...cardClasses);
+          cardBody.classList.add(cardBodyClasses);
+
+          cardBody.innerHTML = doc;
+          card.append(cardBody);
+          this.storedEl.append(card);
+        })
+      }else{
+        this.storedEl.innerHTML = '<div class="p-5">Aucune data disponible !</div>'
+      }
+    }
   }
 
   private handleFormSubmit(e: Event){
