@@ -1,9 +1,9 @@
-import { HasHtmlFormat } from "../interfaces/HasHtmlFormat.js";
-import { HasPrint } from "../interfaces/HasPrint.js";
-import { HasRender } from "../interfaces/HasRender.js";
-import { Datas } from "./Datas.js";
-import { Display } from "./Display.js";
-import { Print } from "./Print.js";
+import { HasHtmlFormat } from "../interfaces/HasHtmlFormat";
+import { HasPrint } from "../interfaces/HasPrint";
+import { HasRender } from "../interfaces/HasRender";
+import { Datas } from "./Datas";
+import { Display } from "./Display";
+import { Print } from "./Print";
 
 export class FormInput {
   form: HTMLFormElement;
